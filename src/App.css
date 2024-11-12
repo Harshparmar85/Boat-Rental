@@ -1,0 +1,394 @@
+/* Global Styles */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Body Background Image */
+body {
+  background-image: url('Bg.jpg'); /* Ensure the correct path to your image */
+  background-size: cover; /* Makes the image cover the entire viewport */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
+  background-attachment: fixed; /* Keeps the image fixed during scrolling */
+}
+body, html {
+  height: 100vh;
+  margin: 0; /* Removes default margin to avoid unexpected spacing */
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: rgba(247, 247, 247, 0.9); /* Semi-transparent background */
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links li {
+  display: inline;
+}
+
+.navbar-links a {
+  color: rgb(3, 2, 22);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #060110;
+}
+
+.navbar-login-button,
+.navbar-register-button {
+  background-color: #020111;
+  color: rgb(246, 242, 242);
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navbar-login-button:hover,
+.navbar-register-button:hover {
+  background-color: #04010a;
+}
+
+/* HeroSection Styles */
+.hero-section {
+  position: relative;
+  height: 60vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(70%);
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(17, 1, 1, 0.5); /* Add semi-transparent overlay */
+  padding: 20px 40px;
+  border-radius: 8px;
+}
+
+.hero-overlay h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(240, 237, 237, 0.8);
+}
+
+.hero-overlay p {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+/* Categories Styles */
+.categories-section {
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.categories-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Updated Grid for Categories */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 20px;
+}
+
+.category-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-color: white;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+.category-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.category-card:hover img {
+  transform: scale(1.1);
+}
+
+.category-overlay {
+  position: relative;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.category-overlay span {
+  font-weight: bold;
+}
+
+.view-button {
+  background-color: #f6f3f8;
+  color: rgb(15, 1, 1);
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.view-button:hover {
+  background-color: #020006;
+}
+
+/* Footer styles */
+.footer {
+  background-color: #333;
+  color: #ccc;
+  padding: 40px 20px;
+  font-size: 0.9em;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.footer-logo {
+  flex: 1 1 100px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo img {
+  width: 50px;
+  height: auto;
+}
+
+.footer-links {
+  display: flex;
+  flex: 3;
+  justify-content: space-around;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column h4 {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 8px;
+}
+
+.footer-column a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-column a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  flex: 1 1 100%;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #444;
+}
+
+.footer-bottom span {
+  color: #999;
+}
+
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor; /* Makes the icon inherit the text color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-column {
+    align-items: center;
+    margin-bottom: 20px;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-overlay h1 {
+    font-size: 2.5rem;
+  }
+
+  .categories-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .category-overlay {
+    font-size: 1rem;
+  }
+
+  .footer {
+    font-size: 0.8em;
+  }
+}
+
+/* Boat card inside expanded view */
+.boats-list {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Display three items per row */
+  gap: 15px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .boats-list {
+    grid-template-columns: repeat(2, 1fr); /* Display two items per row on medium screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .boats-list {
+    grid-template-columns: 1fr; /* Display one item per row on small screens */
+  }
+}
+
+.boat-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.boat-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.boat-card h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.boat-card p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.available {
+  color: green;
+  font-weight: bold;
+}
+
+.not-available {
+  color: red;
+  font-weight: bold;
+}

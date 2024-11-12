@@ -1,0 +1,91 @@
+/* Reset and font setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Centering the form */
+body, html {
+  height: 100%;
+  padding-left: 100px;
+  display: grid;
+  align-items: center;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/boat-rental-8d2e7.appspot.com/o/boat-register.jpg?alt=media'); /* Replace with your registration image path */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.registration-container {
+  width: 400px;
+  padding: 40px;
+  background-color: #4dd9e5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.registration-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Styling input fields */
+.registration-container input[type="email"],
+.registration-container input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Styling the Register button */
+.registration-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50; /* Button color */
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.registration-container button:hover {
+  background-color: #45a049; /* Darker hover effect */
+}
+
+/* "Back to Login" link styling */
+.registration-container .back-to-login {
+  display: block;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+}
+
+.registration-container .back-to-login:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Optional: Styling for the "Already have an account?" text */
+.registration-container .login-link {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.registration-container .login-link:hover {
+  text-decoration: underline;
+}
