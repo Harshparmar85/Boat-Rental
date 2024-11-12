@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { auth, firestore } from './firebase';
 import { useNavigate } from 'react-router-dom';
 
+
 const AdminDashboard = () => {
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
+      <h1>Welcome To </h1>
       <h2>Admin Dashboard</h2>
       <nav>
         <button onClick={() => navigate('/boat-owners')}>Boat Owners</button>
