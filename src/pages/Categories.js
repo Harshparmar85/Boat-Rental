@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Footer from './Footer';
+
 
 const categories = [
     { name: 'Yacht', image: 'Yacht.jpg', boats: [ { name: 'Luxurberg', image: 'Y1.jpg', description: 'Luxury yacht with all amenities.', price: '$700/Day', available: true }, { name: 'Indu', image: 'Yacht2.jpg', description: 'Elegant yacht with spacious decks.', price: '$1000/Day', available: false } ] },
@@ -52,7 +52,7 @@ const Categories = () => {
                 ))}
             </div>
             {/* Move Footer outside of the .categories-grid */}
-            <Footer />
+            
         </section>
     );
 };
