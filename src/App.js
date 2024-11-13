@@ -7,13 +7,13 @@ import Footer from "./pages/Footer";
 import Navbar from "./pages/Navbar";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
+import AdminDashboard from "./pages/AdminDashboard";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
 
 const Home = () => (
   <div className="App">
-   
     <HeroSection />
     <Categories />
     <Footer />
@@ -42,7 +42,17 @@ const App = () => {
 
           {/* Additional routes for other pages */}
           <Route path="/categories" element={<Categories />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/about-us" element={<AboutUs />} />
+
+          {/* Protected admin route */}
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute role="admin"> {/* Ensure only admins can access */}
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Redirect unknown paths */}
           <Route path="*" element={<Navigate to="/" />} />
