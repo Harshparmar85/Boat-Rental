@@ -3,28 +3,29 @@ import { Form, Alert, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage, db } from "../firebase"; // Use db instead of firestore
-import { doc, setDoc } from "firebase/firestore"; // Add Firestore functions
-import "../css/Login.css";
+import { storage, db } from "../firebase"; // Ensure Firebase imports are correct
+import { doc, setDoc } from "firebase/firestore"; // Add Firestore methods
+import "../css/Login.css"; // Assuming the same CSS file is used for styling
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(""); // For selecting user role
   const [error, setError] = useState("");
-  const [image, setImage] = useState("");
-  const { signUp } = useUserAuth();
-  const navigate = useNavigate();
+  const [image, setImage] = useState(""); // For background image
+  const { signUp } = useUserAuth(); // Assuming you have a context for user auth
+  const navigate = useNavigate(); // For navigation after successful registration
 
   useEffect(() => {
+    // Fetch background image from Firebase Storage
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, "images/boat-register.jpg");
-        const url = await getDownloadURL(imageRef);
-        setImage(url);
+        const imageRef = ref(storage, "images/boat-register.jpg"); // Path to image in Firebase Storage
+        const url = await getDownloadURL(imageRef); // Get URL of the image
+        setImage(url); // Set image in the state for background
       } catch (error) {
-        console.error("Error fetching image:", error);
+        console.error("Error fetching image:", error); // Handle errors
       }
     };
     fetchImage();
@@ -32,8 +33,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset error
 
+    // Validation
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -45,18 +47,24 @@ const Register = () => {
     }
 
     try {
+      // Register user using email and password
       const userCredential = await signUp(email, password);
       const user = userCredential.user;
 
-      // Save user role in Firestore
+      // Save user role and email in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: email,
-        role: role, // Save selected role
+        role: role, // Save the role selected by the user
       });
 
-      navigate("/home"); // Navigate to home page after registration
+      // Redirect to home or admin dashboard based on role
+      if (role === "admin") {
+        navigate("/adminDashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Set error message if any
     }
   };
 
@@ -66,6 +74,7 @@ const Register = () => {
         <h2 className="login-heading">Boat Rental Registration</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
+          {/* Email input field */}
           <Form.Group className="mb-3">
             <Form.Label>Email:</Form.Label>
             <Form.Control
@@ -76,6 +85,7 @@ const Register = () => {
             />
           </Form.Group>
 
+          {/* Password input field */}
           <Form.Group className="mb-3">
             <Form.Label>Password:</Form.Label>
             <Form.Control
@@ -86,6 +96,7 @@ const Register = () => {
             />
           </Form.Group>
 
+          {/* Confirm Password input field */}
           <Form.Group className="mb-3">
             <Form.Label>Confirm Password:</Form.Label>
             <Form.Control
@@ -96,7 +107,7 @@ const Register = () => {
             />
           </Form.Group>
 
-          {/* Role Selection Dropdown */}
+          {/* Role selection */}
           <Form.Group className="mb-3">
             <Form.Label>Role:</Form.Label>
             <Form.Control
@@ -115,6 +126,7 @@ const Register = () => {
             Register
           </Button>
 
+          {/* Link to Login */}
           <div className="text-center mt-3">
             Already have an account? <Link to="/">Back to Login</Link>
           </div>

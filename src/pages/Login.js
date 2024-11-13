@@ -8,12 +8,12 @@ import { storage } from "../firebase";
 import "../css/Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [image, setImage] = useState("");
-  const { logIn, googleSignIn } = useUserAuth();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState(""); // Declare state for email
+  const [password, setPassword] = useState(""); // Declare state for password
+  const [error, setError] = useState(""); // Declare state for error
+  const [image, setImage] = useState(""); // Declare state for the background image
+  const { logIn, googleSignIn } = useUserAuth(); // Assuming you have UserAuth context
+  const navigate = useNavigate(); // Use useNavigate for navigation
 
   // Fetch the background image from Firebase Storage
   useEffect(() => {
@@ -21,7 +21,7 @@ const Login = () => {
       try {
         const imageRef = ref(storage, "images/boat-login.jpg");
         const url = await getDownloadURL(imageRef);
-        setImage(url);
+        setImage(url); // Set the background image URL
       } catch (error) {
         console.error("Error fetching image:", error);
       }
@@ -31,22 +31,22 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset error before attempting login
     try {
-      await logIn(email, password);
-      navigate("/home"); // Navigate to home page after login
+      await logIn(email, password); // Attempt login with email/password
+      navigate("/adminDashboard"); // Navigate to Admin Dashboard after successful login
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Display error message
     }
   };
 
   const handleGoogleSignIn = async (e) => {
     e.preventDefault();
     try {
-      await googleSignIn();
-      navigate("/home"); // Navigate to home page after login
+      await googleSignIn(); // Google login
+      navigate("/adminDashboard"); // Navigate to Admin Dashboard after successful login
     } catch (error) {
-      setError(error.message);
+      setError(error.message); // Display error message
     }
   };
 
