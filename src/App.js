@@ -42,11 +42,11 @@ const App = () => {
 
           {/* Additional routes for other pages */}
           <Route path="/categories" element={<Categories />} />
-          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
 
           {/* Protected admin route */}
           <Route 
-            path="/admin" 
+            path="/AdminDashboard" 
             element={
               <ProtectedRoute role="admin"> {/* Ensure only admins can access */}
                 <AdminDashboard />
