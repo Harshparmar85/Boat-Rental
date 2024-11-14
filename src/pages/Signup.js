@@ -59,7 +59,7 @@ const Register = () => {
 
       // Redirect to home or admin dashboard based on role
       if (role === "admin") {
-        navigate("/adminDashboard");
+        navigate("/AdminDashboard");
       } else {
         navigate("/home");
       }
