@@ -9,12 +9,12 @@ import Footer from "./pages/Footer";
 import Navbar from "./pages/Navbar";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
-import AdminDashboard from "./pages/AdminDashboard";
+import OwnersDashboard from "./pages/OwnersDashboard";
 import BoatOwer from "./pages/BoatOwer"; // Corrected component name
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
 import ProtectedRoute from "./components/ProtectedRoute";
-import styles from './pages/App.css';
+
 
 const Home = () => (
   <div className="App">
@@ -51,10 +51,10 @@ const App = () => {
 
             {/* Protected admin route */}
             <Route
-              path="/AdminDashboard"
+              path="/OwnersDashboard"
               element={
-                <ProtectedRoute role="admin"> {/* Ensure only admins can access */}
-                  <AdminDashboard />
+                <ProtectedRoute role="BoatOwners"> {/* Ensure only admins can access */}
+                  <OwnersDashboard />
                 </ProtectedRoute>
               }
             />

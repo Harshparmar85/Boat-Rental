@@ -34,7 +34,7 @@ const Login = () => {
     setError(""); // Reset error before attempting login
     try {
       await logIn(email, password); // Attempt login with email/password
-      navigate("/adminDashboard"); // Navigate to Admin Dashboard after successful login
+      navigate("/OwnersDashboard"); // Navigate to Owner Dashboard after successful login
     } catch (err) {
       setError(err.message); // Display error message
     }
@@ -44,7 +44,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await googleSignIn(); // Google login
-      navigate("/adminDashboard"); // Navigate to Admin Dashboard after successful login
+      navigate("/Home"); // Navigate to  OwnerDashboard after successful login
     } catch (error) {
       setError(error.message); // Display error message
     }

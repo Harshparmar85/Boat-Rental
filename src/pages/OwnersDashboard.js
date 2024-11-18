@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from "firebase/firestore";
 
-const AdminDashboard = () => {
+const OwnersDashboard = () => {
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     fetchUserRole();
   }, []);
 
-  if (userRole !== 'admin') {
+  if (userRole !== 'BoatOwners') {
     return <p style={{ color: 'red', fontSize: '20px', textAlign: 'center' }}>Access Denied</p>;
   }
 
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
     <div style={styles.dashboardContainer}>
       <div style={styles.overlay}>
         <h1 style={styles.title}>Welcome To</h1>
-        <h2 style={styles.subtitle}>Admin Dashboard</h2>
+        <h2 style={styles.subtitle}>Owners Dashboard</h2>
         <nav style={styles.nav}>
           <button style={styles.button} onClick={() => navigate('/boat-ower')}>Boat Owners</button>
           <button style={styles.button} onClick={() => navigate('/customers')}>Customers</button>
@@ -91,4 +91,4 @@ const styles = {
   }
 };
 
-export default AdminDashboard;
+export default OwnersDashboard;
