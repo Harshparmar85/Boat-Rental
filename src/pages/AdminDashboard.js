@@ -34,7 +34,7 @@ const AdminDashboard = () => {
         <h1 style={styles.title}>Welcome To</h1>
         <h2 style={styles.subtitle}>Admin Dashboard</h2>
         <nav style={styles.nav}>
-          <button style={styles.button} onClick={() => navigate('/boat-owners')}>Boat Owners</button>
+          <button style={styles.button} onClick={() => navigate('/boat-ower')}>Boat Owners</button>
           <button style={styles.button} onClick={() => navigate('/customers')}>Customers</button>
           <button style={styles.button} onClick={() => navigate('/reviews')}>Customer Reviews</button>
         </nav>
