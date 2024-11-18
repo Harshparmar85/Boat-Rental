@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNotification } from '../context/NotificationContext';
 
+
 const NotificationsDisplay = () => {
   const { notifications } = useNotification();
 

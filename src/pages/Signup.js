@@ -58,8 +58,8 @@ const Register = () => {
       });
 
       // Redirect to home or admin dashboard based on role
-      if (role === "admin") {
-        navigate("/AdminDashboard");
+      if (role === "BoatOwners") {
+        navigate("/OwnersDashboard");
       } else {
         navigate("/home");
       }
@@ -117,7 +117,7 @@ const Register = () => {
               required
             >
               <option value="">Select Role</option>
-              <option value="admin">Admin</option>
+              <option value="BoatOwners">BoatOwer</option>
               <option value="customer">Customer</option>
             </Form.Control>
           </Form.Group>
