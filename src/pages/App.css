@@ -1,54 +1,32 @@
-/* Global Styles */
+/* General Reset and Global Styles */
+*  {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  font-family: Arial, sans-serif;
+  color: #333;
+  height: 100vh;
+  margin: 0;
+  background-color: #f9f9f9;
+  background-image: url('/src/css/Bg.jpg'); /* Ensure the correct path to your image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Body Background Image */
-body {
-  background-image: url('Bg.jpg'); /* Ensure the correct path to your image */
-  background-size: cover; /* Makes the image cover the entire viewport */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  background-position: center; /* Centers the image */
-  background-attachment: fixed; /* Keeps the image fixed during scrolling */
-}
-body, html {
-  height: 100vh;
-  margin: 0; /* Removes default margin to avoid unexpected spacing */
+.container {
+  flex: 1; /* Pushes footer to the bottom */
 }
 
 /* Navbar Styles */
@@ -101,7 +79,7 @@ body, html {
   background-color: #04010a;
 }
 
-/* HeroSection Styles */
+/* Hero Section Styles */
 .hero-section {
   position: relative;
   height: 60vh;
@@ -125,7 +103,7 @@ body, html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(17, 1, 1, 0.5); /* Add semi-transparent overlay */
+  background-color: rgba(17, 1, 1, 0.5);
   padding: 20px 40px;
   border-radius: 8px;
 }
@@ -141,11 +119,12 @@ body, html {
   margin-top: 0.5rem;
 }
 
-/* Categories Styles */
-.categories-section {
+/* Categories Section */
+.categories-section  {
   padding: 50px 20px;
   background-color: #f9f9f9;
   text-align: center;
+  background-repeat: no-repeat;
 }
 
 .categories-section h2 {
@@ -154,10 +133,9 @@ body, html {
   color: #333;
 }
 
-/* Updated Grid for Categories */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
@@ -217,7 +195,64 @@ body, html {
   background-color: #020006;
 }
 
-/* Footer styles */
+/* Boat Listing Styles */
+.boats-list .container{
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .boats-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .boats-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.boat-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.boat-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.boat-card h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.boat-card p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.available {
+  color: green;
+  font-weight: bold;
+}
+
+.not-available {
+  color: red;
+  font-weight: bold;
+}
+
+/* Footer Styles */
 .footer {
   background-color: #333;
   color: #ccc;
@@ -293,13 +328,7 @@ body, html {
   color: #999;
 }
 
-.footer-icon {
-  width: 24px;
-  height: 24px;
-  fill: currentColor; /* Makes the icon inherit the text color */
-}
-
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
@@ -315,10 +344,7 @@ body, html {
     align-items: center;
     margin-bottom: 20px;
   }
-}
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
   .hero-overlay h1 {
     font-size: 2.5rem;
   }
@@ -336,59 +362,12 @@ body, html {
   }
 }
 
-/* Boat card inside expanded view */
-.boats-list {
-  margin-top: 15px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Display three items per row */
-  gap: 15px;
-  align-items: start;
-}
-
-@media (max-width: 992px) {
-  .boats-list {
-    grid-template-columns: repeat(2, 1fr); /* Display two items per row on medium screens */
+/* Keyframes for Animation */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-}
-
-@media (max-width: 600px) {
-  .boats-list {
-    grid-template-columns: 1fr; /* Display one item per row on small screens */
+  to {
+    transform: rotate(360deg);
   }
-}
-
-.boat-card {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  text-align: left;
-}
-
-.boat-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.boat-card h4 {
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 10px 0 5px;
-}
-
-.boat-card p {
-  font-size: 0.9rem;
-  margin: 5px 0;
-}
-
-.available {
-  color: green;
-  font-weight: bold;
-}
-
-.not-available {
-  color: red;
-  font-weight: bold;
 }

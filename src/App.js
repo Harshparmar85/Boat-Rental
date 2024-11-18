@@ -1,3 +1,5 @@
+// src/App.js
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
@@ -8,9 +10,11 @@ import Navbar from "./pages/Navbar";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
 import AdminDashboard from "./pages/AdminDashboard";
+import BoatOwer from "./pages/BoatOwer"; // Corrected component name
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
 import ProtectedRoute from "./components/ProtectedRoute";
-import './App.css';
+import styles from './pages/App.css';
 
 const Home = () => (
   <div className="App">
@@ -23,41 +27,53 @@ const Home = () => (
 const App = () => {
   return (
     <UserAuthContextProvider>
-      <Router>
-        <Navbar /> {/* Navbar is outside of Routes to make it visible on all pages */}
-        <Routes>
-          {/* Protected home route, displayed when user is logged in */}
-          <Route 
-            path="/" 
-            element={
-              <ProtectedRoute>
-                <Home /> {/* Display Home layout */}
-              </ProtectedRoute>
-            }
-          />
+      <NotificationProvider> {/* Ensure NotificationProvider wraps all components */}
+        <Router>
+          <Navbar /> {/* Navbar is outside of Routes to make it visible on all pages */}
+          <Routes>
+            {/* Protected home route, displayed when user is logged in */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home /> {/* Display Home layout */}
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Public authentication routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+            {/* Public authentication routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-          {/* Additional routes for other pages */}
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
+            {/* Additional routes for other pages */}
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
 
-          {/* Protected admin route */}
-          <Route 
-            path="/AdminDashboard" 
-            element={
-              <ProtectedRoute role="admin"> {/* Ensure only admins can access */}
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected admin route */}
+            <Route
+              path="/AdminDashboard"
+              element={
+                <ProtectedRoute role="admin"> {/* Ensure only admins can access */}
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Redirect unknown paths */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
+            {/* Protected Boat Owner route */}
+            <Route
+              path="/boat-ower"
+              element={
+                <ProtectedRoute> {/* Ensure only authenticated users can access */}
+                  <BoatOwer />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Redirect unknown paths */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Router>
+      </NotificationProvider>
     </UserAuthContextProvider>
   );
 };
