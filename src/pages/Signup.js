@@ -117,7 +117,7 @@ const Register = () => {
               required
             >
               <option value="">Select Role</option>
-              <option value="BoatOwners">BoatOwer</option>
+              <option value="BoatOwners">BoatOwner</option>
               <option value="customer">Customer</option>
             </Form.Control>
           </Form.Group>

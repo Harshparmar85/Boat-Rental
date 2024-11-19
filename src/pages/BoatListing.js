@@ -1,6 +1,6 @@
 // src/components/BoatListing.js
 import React, { useState } from 'react';
-
+import "../css/BoatListing.css";
 const BoatListing = ({ onAddBoat }) => {
   const [boatDetails, setBoatDetails] = useState({
     name: '',
@@ -72,7 +72,7 @@ const BoatListing = ({ onAddBoat }) => {
         <button type="submit">Add Boat</button>
       </form>
 
-      <h2>Available Boats</h2>
+      <h3>Available Boats</h3>
       <div className="boat-list">
         {boats.map((boat, index) => (
           <div key={index} className="boat-card" onClick={() => handleSelectBoat(boat)}>
