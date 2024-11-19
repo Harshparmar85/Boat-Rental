@@ -9,11 +9,11 @@ import Footer from "./pages/Footer";
 import Navbar from "./pages/Navbar";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
-import OwnersDashboard from "./pages/OwnersDashboard";
 import BoatOwer from "./pages/BoatOwer"; // Corrected component name
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
 import ProtectedRoute from "./components/ProtectedRoute";
+import OwnersDashboard from "./pages/OwnersDashboard";
 
 
 const Home = () => (
@@ -49,12 +49,12 @@ const App = () => {
             <Route path="/categories" element={<Categories />} />
             <Route path="/AboutUs" element={<AboutUs />} />
 
-            {/* Protected admin route */}
+            {/* Protected Boatowners route */}
             <Route
               path="/OwnersDashboard"
               element={
-                <ProtectedRoute role="BoatOwners"> {/* Ensure only admins can access */}
-                  <OwnersDashboard />
+                <ProtectedRoute role="BoatOwner"> {/* Ensure only Owners can access */}
+                  <OwnersDashboard/>
                 </ProtectedRoute>
               }
             />

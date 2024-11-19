@@ -5,8 +5,7 @@ import BoatListing from './BoatListing.js';
 import BoatUpdate from './BoatUpdate.js';
 import NotificationsDisplay from './NotificationsDisplay.js';
 import { useNotification } from '../context/NotificationContext';
-import HeroSection from './HeroSection';
-import Footer from './Footer.js'; // Updated path for Footer component
+import Footer from './Footer.js'; // 
 import styles from './App.css';
 
 
@@ -33,7 +32,7 @@ const AppContent = () => {
 
   return (
     <div className="App">
-      <HeroSection /> {/* Hero Section at the top */}
+    
 
       <main className="container">
         <h1>Auckland Boat Rental</h1>

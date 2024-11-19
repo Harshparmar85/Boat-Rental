@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import "../css/category.css";
 const categories = [
     { name: 'Yacht', image: 'Yacht.jpg', boats: [ { name: 'Luxurberg', image: 'Y1.jpg', description: 'Luxury yacht with all amenities.', price: '$700/Day', available: true }, { name: 'Indu', image: 'Yacht2.jpg', description: 'Elegant yacht with spacious decks.', price: '$1000/Day', available: false } ] },
     { name: 'Motor Boat', image: 'Motor boat.jpg', boats: [ { name: 'Vintage Cabin', image: 'M1.jpeg', description: 'High-speed motor boat for adventures.', price: '$300/Day', available: true }, { name: 'Monster', image: 'M2.jpeg', description: 'Motor boat with modern design.', price: '$400/Day', available: false } ] },
