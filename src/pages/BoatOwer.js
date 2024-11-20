@@ -1,5 +1,3 @@
-// src/AppContent.js
-
 import React, { useState } from 'react';
 import BoatListing from './BoatListing.js';
 import BoatUpdate from './BoatUpdate.js';

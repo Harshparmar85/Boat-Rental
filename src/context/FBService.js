@@ -33,4 +33,7 @@ class FBDataService {
   };
 }
 
-export default new FBDataService();
+// Assign the instance to a named variable before exporting
+const fbDataService = new FBDataService();
+
+export default fbDataService;

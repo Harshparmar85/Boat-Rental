@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
@@ -14,7 +12,6 @@ import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
 import ProtectedRoute from "./components/ProtectedRoute";
 import OwnersDashboard from "./pages/OwnersDashboard";
-
 
 const Home = () => (
   <div className="App">
@@ -31,13 +28,11 @@ const App = () => {
         <Router>
           <Navbar /> {/* Navbar is outside of Routes to make it visible on all pages */}
           <Routes>
-            {/* Protected home route, displayed when user is logged in */}
+            {/* Home route - Public */}
             <Route
               path="/"
               element={
-                <ProtectedRoute>
-                  <Home /> {/* Display Home layout */}
-                </ProtectedRoute>
+                <Home /> // Make the Home page public
               }
             />
 
@@ -54,7 +49,7 @@ const App = () => {
               path="/OwnersDashboard"
               element={
                 <ProtectedRoute role="BoatOwner"> {/* Ensure only Owners can access */}
-                  <OwnersDashboard/>
+                  <OwnersDashboard />
                 </ProtectedRoute>
               }
             />

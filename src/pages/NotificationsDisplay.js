@@ -1,4 +1,4 @@
-// src/components/NotificationsDisplay.js
+
 import React from 'react';
 import { useNotification } from '../context/NotificationContext';
 
