@@ -1,4 +1,4 @@
-// src/components/BoatListing.js
+
 import React, { useState } from 'react';
 import "../css/BoatListing.css";
 const BoatListing = ({ onAddBoat }) => {

@@ -3,29 +3,31 @@ import { Form, Alert, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage, db } from "../firebase"; // Ensure Firebase imports are correct
-import { doc, setDoc } from "firebase/firestore"; // Add Firestore methods
-import "../css/Login.css"; // Assuming the same CSS file is used for styling
+import { storage, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import "../css/Login.css";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState(""); // For selecting user role
+  const [role, setRole] = useState("");
+  const [firstName, setFirstName] = useState(""); // State for First Name
+  const [lastName, setLastName] = useState(""); // State for Last Name
+  const [address, setAddress] = useState(""); // State for Address
   const [error, setError] = useState("");
-  const [image, setImage] = useState(""); // For background image
-  const { signUp } = useUserAuth(); // Assuming you have a context for user auth
-  const navigate = useNavigate(); // For navigation after successful registration
+  const [image, setImage] = useState("");
+  const { signUp } = useUserAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch background image from Firebase Storage
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, "images/boat-register.jpg"); // Path to image in Firebase Storage
-        const url = await getDownloadURL(imageRef); // Get URL of the image
-        setImage(url); // Set image in the state for background
+        const imageRef = ref(storage, "images/boat-register.jpg");
+        const url = await getDownloadURL(imageRef);
+        setImage(url);
       } catch (error) {
-        console.error("Error fetching image:", error); // Handle errors
+        console.error("Error fetching image:", error);
       }
     };
     fetchImage();
@@ -33,9 +35,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error
+    setError("");
 
-    // Validation
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -47,24 +48,24 @@ const Register = () => {
     }
 
     try {
-      // Register user using email and password
       const userCredential = await signUp(email, password);
       const user = userCredential.user;
 
-      // Save user role and email in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: email,
-        role: role, // Save the role selected by the user
+        role: role,
+        firstName: firstName, // Save First Name
+        lastName: lastName, // Save Last Name
+        address: address, // Save Address
       });
 
-      // Redirect to home or admin dashboard based on role
       if (role === "BoatOwners") {
         navigate("/OwnersDashboard");
       } else {
         navigate("/home");
       }
     } catch (err) {
-      setError(err.message); // Set error message if any
+      setError(err.message);
     }
   };
 
@@ -74,7 +75,33 @@ const Register = () => {
         <h2 className="login-heading">Boat Rental Registration</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
-          {/* Email input field */}
+          <Form.Group className="mb-3">
+            <Form.Label>First Name:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your first name"
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Last Name:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your last name"
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Address:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your address"
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Email:</Form.Label>
             <Form.Control
@@ -84,8 +111,6 @@ const Register = () => {
               required
             />
           </Form.Group>
-
-          {/* Password input field */}
           <Form.Group className="mb-3">
             <Form.Label>Password:</Form.Label>
             <Form.Control
@@ -95,8 +120,6 @@ const Register = () => {
               required
             />
           </Form.Group>
-
-          {/* Confirm Password input field */}
           <Form.Group className="mb-3">
             <Form.Label>Confirm Password:</Form.Label>
             <Form.Control
@@ -106,8 +129,6 @@ const Register = () => {
               required
             />
           </Form.Group>
-
-          {/* Role selection */}
           <Form.Group className="mb-3">
             <Form.Label>Role:</Form.Label>
             <Form.Control
@@ -121,12 +142,9 @@ const Register = () => {
               <option value="customer">Customer</option>
             </Form.Control>
           </Form.Group>
-
           <Button variant="primary" type="submit" className="w-100">
             Register
           </Button>
-
-          {/* Link to Login */}
           <div className="text-center mt-3">
             Already have an account? <Link to="/">Back to Login</Link>
           </div>

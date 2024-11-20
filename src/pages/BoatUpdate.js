@@ -1,4 +1,4 @@
-// src/components/BoatUpdate.js
+
 import React, { useState, useEffect } from 'react';
 
 const BoatUpdate = ({ boat, onUpdateBoat }) => {
