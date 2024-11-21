@@ -12,6 +12,7 @@ import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
 import ProtectedRoute from "./components/ProtectedRoute";
 import OwnersDashboard from "./pages/OwnersDashboard";
+import BookingPage from "./pages/BookingPage"; // Import BookingPage
 
 const Home = () => (
   <div className="App">
@@ -40,9 +41,15 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
-            {/* Additional routes for other pages */}
+            {/* Public pages */}
             <Route path="/categories" element={<Categories />} />
             <Route path="/AboutUs" element={<AboutUs />} />
+
+            {/* Booking Page Route */}
+            <Route 
+              path="/BookingPage" 
+              element={<BookingPage />} // Add BookingPage route
+            />
 
             {/* Protected Boatowners route */}
             <Route
