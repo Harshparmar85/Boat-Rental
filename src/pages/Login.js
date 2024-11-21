@@ -8,12 +8,12 @@ import { storage } from "../firebase";
 import "../css/Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState(""); // Declare state for email
-  const [password, setPassword] = useState(""); // Declare state for password
-  const [error, setError] = useState(""); // Declare state for error
-  const [image, setImage] = useState(""); // Declare state for the background image
-  const { logIn, googleSignIn } = useUserAuth(); // Assuming you have UserAuth context
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [image, setImage] = useState("");
+  const { logIn, googleSignIn, user } = useUserAuth(); // Access user state
+  const navigate = useNavigate();
 
   // Fetch the background image from Firebase Storage
   useEffect(() => {
@@ -21,7 +21,7 @@ const Login = () => {
       try {
         const imageRef = ref(storage, "images/boat-login.jpg");
         const url = await getDownloadURL(imageRef);
-        setImage(url); // Set the background image URL
+        setImage(url);
       } catch (error) {
         console.error("Error fetching image:", error);
       }
@@ -29,24 +29,31 @@ const Login = () => {
     fetchImage();
   }, []);
 
+  // Redirect logged-in users to the appropriate page
+  useEffect(() => {
+    if (user) {
+      navigate("/Home"); // Redirect to home or dashboard after successful login
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error before attempting login
+    setError("");
     try {
-      await logIn(email, password); // Attempt login with email/password
-      navigate("/OwnersDashboard"); // Navigate to Owner Dashboard after successful login
+      await logIn(email, password);
+      navigate("/Home"); // Navigate after login
     } catch (err) {
-      setError(err.message); // Display error message
+      setError("Invalid email or password. Please try again.");
     }
   };
 
   const handleGoogleSignIn = async (e) => {
     e.preventDefault();
     try {
-      await googleSignIn(); // Google login
-      navigate("/Home"); // Navigate to  OwnerDashboard after successful login
+      await googleSignIn();
+      navigate("/Home");
     } catch (error) {
-      setError(error.message); // Display error message
+      setError("Google sign-in failed. Please try again.");
     }
   };
 
@@ -61,7 +68,9 @@ const Login = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -70,7 +79,9 @@ const Login = () => {
             <Form.Control
               type="password"
               placeholder="Enter password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </Form.Group>
 
