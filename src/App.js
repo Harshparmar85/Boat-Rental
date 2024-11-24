@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import HeroSection from "./pages/HeroSection";
 import Footer from "./pages/Footer";
-import Navbar from "./pages/Navbar";
+import Navbar from "./pages/Navbar"; // Ensure Navbar handles user display
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
 import BoatOwer from "./pages/BoatOwer"; // Corrected component name
@@ -13,6 +13,7 @@ import { NotificationProvider } from "./context/NotificationContext"; // Ensure 
 import ProtectedRoute from "./components/ProtectedRoute";
 import OwnersDashboard from "./pages/OwnersDashboard";
 import BookingPage from "./pages/BookingPage"; // Import BookingPage
+import PaymentPage from "./pages/PaymentPage"; // Import PaymentPage
 
 const Home = () => (
   <div className="App">
@@ -25,17 +26,12 @@ const Home = () => (
 const App = () => {
   return (
     <UserAuthContextProvider>
-      <NotificationProvider> {/* Ensure NotificationProvider wraps all components */}
+      <NotificationProvider>
         <Router>
-          <Navbar /> {/* Navbar is outside of Routes to make it visible on all pages */}
+          <Navbar /> {/* Navbar should display user info */}
           <Routes>
             {/* Home route - Public */}
-            <Route
-              path="/"
-              element={
-                <Home /> // Make the Home page public
-              }
-            />
+            <Route path="/" element={<Home />} />
 
             {/* Public authentication routes */}
             <Route path="/login" element={<Login />} />
@@ -46,16 +42,16 @@ const App = () => {
             <Route path="/AboutUs" element={<AboutUs />} />
 
             {/* Booking Page Route */}
-            <Route 
-              path="/BookingPage" 
-              element={<BookingPage />} // Add BookingPage route
-            />
+            <Route path="/BookingPage" element={<BookingPage />} />
+
+            {/* Payment Page Route */}
+            <Route path="/payment" element={<PaymentPage />} />
 
             {/* Protected Boatowners route */}
             <Route
               path="/OwnersDashboard"
               element={
-                <ProtectedRoute role="BoatOwner"> {/* Ensure only Owners can access */}
+                <ProtectedRoute role="BoatOwner">
                   <OwnersDashboard />
                 </ProtectedRoute>
               }
@@ -65,7 +61,7 @@ const App = () => {
             <Route
               path="/boat-ower"
               element={
-                <ProtectedRoute> {/* Ensure only authenticated users can access */}
+                <ProtectedRoute>
                   <BoatOwer />
                 </ProtectedRoute>
               }

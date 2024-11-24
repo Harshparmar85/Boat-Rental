@@ -93,3 +93,9 @@ button:disabled {
         padding: 15px;
     }
 }
+.error-message {
+    color: red;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
