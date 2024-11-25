@@ -40,6 +40,13 @@ const Navbar = () => {
           </li>
           {user ? (
             <>
+              {user.email === "Ramandeepsingh1032001@gmail.com" && (
+                <li>
+                  <Link to="/admin-dashboard" className="nav-item">
+                    Admin Dashboard
+                  </Link>
+                </li>
+              )}
               <li>
                 <span className="welcome-text">
                   Welcome, {user.displayName || user.email.split("@")[0]}
@@ -52,11 +59,18 @@ const Navbar = () => {
               </li>
             </>
           ) : (
-            <li>
-              <Link to="/login" className="nav-item">
-                Login
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/login" className="nav-item">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin-login" className="nav-item">
+                  Admin Login
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </div>
@@ -65,3 +79,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
