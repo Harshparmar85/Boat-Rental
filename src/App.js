@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import OwnersDashboard from "./pages/OwnersDashboard";
 import BookingPage from "./pages/BookingPage"; // Import BookingPage
 import PaymentPage from "./pages/PaymentPage"; // Import PaymentPage
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const Home = () => (
   <div className="App">
@@ -56,6 +58,10 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+
+            {/* Admin routes */}
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
             {/* Protected Boat Owner route */}
             <Route
