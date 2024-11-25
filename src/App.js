@@ -59,9 +59,16 @@ const App = () => {
               }
             />
 
-            {/* Admin routes */}
+            {/* Admin routes with protection */}
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute requiredAdmin={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Protected Boat Owner route */}
             <Route

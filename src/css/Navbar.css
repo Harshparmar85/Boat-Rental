@@ -1,12 +1,12 @@
 .navbar {
-  background-color: #000; /* Black Navbar */
-  color: white;
+  background-color: #0066cc; /* Blue Navbar */
+  color: rgba(23, 100, 242, 0.893);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
   font-family: Arial, sans-serif;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(6, 122, 211, 0.701);
 }
 
 .navbar-container {
@@ -52,7 +52,7 @@
 
 .logout-button {
   background-color: white;
-  color: #000;
+  color: #0066cc; /* Match the navbar's blue shade */
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
