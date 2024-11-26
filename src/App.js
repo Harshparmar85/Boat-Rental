@@ -4,18 +4,19 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import HeroSection from "./pages/HeroSection";
 import Footer from "./pages/Footer";
-import Navbar from "./pages/Navbar"; // Ensure Navbar handles user display
+import Navbar from "./pages/Navbar";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
-import BoatOwer from "./pages/BoatOwer"; // Corrected component name
-import { UserAuthContextProvider } from "./context/UserAuthContext";
-import { NotificationProvider } from "./context/NotificationContext"; // Ensure correct import
-import ProtectedRoute from "./components/ProtectedRoute";
+import BoatOwner from "./pages/BoatOwer";
 import OwnersDashboard from "./pages/OwnersDashboard";
-import BookingPage from "./pages/BookingPage"; // Import BookingPage
-import PaymentPage from "./pages/PaymentPage"; // Import PaymentPage
+import BookingPage from "./pages/BookingPage";
+import PaymentPage from "./pages/PaymentPage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProfilePage from "./pages/ProfilePage";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { NotificationProvider } from "./context/NotificationContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const Home = () => (
   <div className="App">
@@ -30,36 +31,37 @@ const App = () => {
     <UserAuthContextProvider>
       <NotificationProvider>
         <Router>
-          <Navbar /> {/* Navbar should display user info */}
+          <Navbar />
           <Routes>
-            {/* Home route - Public */}
             <Route path="/" element={<Home />} />
-
-            {/* Public authentication routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-
-            {/* Public pages */}
             <Route path="/categories" element={<Categories />} />
             <Route path="/AboutUs" element={<AboutUs />} />
-
-            {/* Booking Page Route */}
-            <Route path="/BookingPage" element={<BookingPage />} />
-
-            {/* Payment Page Route */}
-            <Route path="/payment" element={<PaymentPage />} />
-
-            {/* Protected Boatowners route */}
             <Route
-              path="/OwnersDashboard"
+              path="/BookingPage"
+              element={
+                <ProtectedRoute>
+                  <BookingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/owners-dashboard"
               element={
                 <ProtectedRoute role="BoatOwner">
                   <OwnersDashboard />
                 </ProtectedRoute>
               }
             />
-
-            {/* Admin routes with protection */}
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route
               path="/admin-dashboard"
@@ -69,19 +71,24 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
-            {/* Protected Boat Owner route */}
             <Route
-              path="/boat-ower"
+              path="/boat-owner"
               element={
-                <ProtectedRoute>
-                  <BoatOwer />
+                <ProtectedRoute role="BoatOwner">
+                  <BoatOwner />
                 </ProtectedRoute>
               }
             />
-
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
             {/* Redirect unknown paths */}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
       </NotificationProvider>

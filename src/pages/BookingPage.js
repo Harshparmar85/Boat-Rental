@@ -1,19 +1,52 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; // To get boat details and navigate
-import { useUserAuth } from "../context/UserAuthContext"; // Import authentication context
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useUserAuth } from "../context/UserAuthContext";
 import "../css/BookingPage.css";
 
 const BookingPage = () => {
-    const { state } = useLocation(); // Get boat details from navigation state
-    const boat = state?.boat; // Ensure boat details are passed
+    const { state } = useLocation();
+    const boat = state?.boat;
     const navigate = useNavigate();
-    const { user } = useUserAuth(); // Get the current user from the authentication context
+    const { user } = useUserAuth();
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [customerName, setCustomerName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const [error, setError] = useState('');
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    const calculatePrice = () => {
+        if (startDate && endDate && boat?.price) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            if (start > end) {
+                setError('End date must be after the start date.');
+                setTotalPrice(0);
+                return;
+            }
+
+            const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Include both start and end days
+            const pricePerDay = parseFloat(boat.price.replace(/\$/g, '')); // Remove "$" if included and parse
+            const price = days * pricePerDay;
+
+            if (!isNaN(price)) {
+                setTotalPrice(price);
+                setError('');
+            } else {
+                setError('Invalid price format in boat data.');
+                setTotalPrice(0);
+            }
+        } else {
+            setTotalPrice(0);
+            setError('Please select valid dates.');
+        }
+    };
+
+    useEffect(() => {
+        calculatePrice();
+    }, [startDate, endDate]); // Trigger calculation when dates change
 
     const handleProceedToPayment = (e) => {
         e.preventDefault();
@@ -28,17 +61,21 @@ const BookingPage = () => {
             return;
         }
 
-        // Prepare booking details
+        if (totalPrice <= 0) {
+            setError('Invalid date range or price. Please select valid dates.');
+            return;
+        }
+
         const bookingDetails = {
             boatName: boat.name,
-            price: boat.price,
+            pricePerDay: `$${boat.price}`, // Per-day price from boat data
+            totalPrice: `$${totalPrice}`, // Calculated total price
             startDate,
             endDate,
             customerName,
             contactNumber,
         };
 
-        // Navigate to PaymentPage and pass booking details
         navigate('/payment', { state: { bookingDetails } });
     };
 
@@ -91,6 +128,10 @@ const BookingPage = () => {
                         placeholder="Enter your contact number"
                         required
                     />
+                </div>
+                <div>
+                    <label>Total Price:</label>
+                    <p>{totalPrice > 0 ? `$${totalPrice}` : 'Please select valid dates.'}</p>
                 </div>
                 <button type="submit">Proceed to Payment</button>
             </form>

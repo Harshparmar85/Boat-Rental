@@ -1,78 +1,73 @@
 import React, { useState, useEffect } from "react";
 import { Form, Alert, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserAuth } from "../context/UserAuthContext";
-import { getDownloadURL, ref } from "firebase/storage";
-import { storage, db } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { auth, db, createUserWithEmailAndPassword, setDoc, doc } from "../firebase";
 import "../css/Login.css";
 
-const Register = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("");
-  const [firstName, setFirstName] = useState(""); // State for First Name
-  const [lastName, setLastName] = useState(""); // State for Last Name
-  const [address, setAddress] = useState(""); // State for Address
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [address, setAddress] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
   const [error, setError] = useState("");
-  const [image, setImage] = useState("");
-  const { signUp } = useUserAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const imageRef = ref(storage, "images/boat-register.jpg");
-        const url = await getDownloadURL(imageRef);
-        setImage(url);
-      } catch (error) {
-        console.error("Error fetching image:", error);
-      }
-    };
-    fetchImage();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
+    // Validation
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
     if (!role) {
       setError("Please select a role");
+      setLoading(false);
       return;
     }
 
     try {
-      const userCredential = await signUp(email, password);
+      // Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Save user details in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: email,
-        role: role,
-        firstName: firstName, // Save First Name
-        lastName: lastName, // Save Last Name
-        address: address, // Save Address
+        role: role.toLowerCase(), // Save role in lowercase
+        firstname: firstname, // Save firstname
+        lastname: lastname, // Save lastname
+        address: address, // Save address
+        contactNumber: contactNumber, // Save contact number
+        createdAt: new Date().toISOString(), // Add creation timestamp
       });
 
-      if (role === "BoatOwners") {
+      // Redirect based on role
+      if (role.toLowerCase() === "boatowners") {
         navigate("/OwnersDashboard");
       } else {
         navigate("/home");
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-page" style={{ backgroundImage: `url(${image})` }}>
+    <div className="login-page">
       <div className="login-container">
-        <h2 className="login-heading">Boat Rental Registration</h2>
+        <h2 className="login-heading">Register</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
@@ -80,7 +75,7 @@ const Register = () => {
             <Form.Control
               type="text"
               placeholder="Enter your first name"
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => setFirstname(e.target.value)}
               required
             />
           </Form.Group>
@@ -89,7 +84,7 @@ const Register = () => {
             <Form.Control
               type="text"
               placeholder="Enter your last name"
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => setLastname(e.target.value)}
               required
             />
           </Form.Group>
@@ -99,6 +94,15 @@ const Register = () => {
               type="text"
               placeholder="Enter your address"
               onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Contact Number:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your contact number"
+              onChange={(e) => setContactNumber(e.target.value)}
               required
             />
           </Form.Group>
@@ -133,17 +137,16 @@ const Register = () => {
             <Form.Label>Role:</Form.Label>
             <Form.Control
               as="select"
-              value={role}
               onChange={(e) => setRole(e.target.value)}
               required
             >
               <option value="">Select Role</option>
-              <option value="BoatOwners">BoatOwner</option>
-              <option value="customer">Customer</option>
+              <option value="BoatOwners">Boat Owner</option>
+              <option value="Customer">Customer</option>
             </Form.Control>
           </Form.Group>
-          <Button variant="primary" type="submit" className="w-100">
-            Register
+          <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
           </Button>
           <div className="text-center mt-3">
             Already have an account? <Link to="/">Back to Login</Link>
@@ -154,4 +157,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;

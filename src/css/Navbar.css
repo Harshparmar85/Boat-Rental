@@ -1,12 +1,16 @@
+/* Navbar Styles */
 .navbar {
-  background-color: #0066cc; /* Blue Navbar */
-  color: rgba(23, 100, 242, 0.893);
+  background-color: #0056b3; /* Blue shade */
+  color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 15px 25px;
   font-family: Arial, sans-serif;
-  box-shadow: 0 4px 6px rgba(6, 122, 211, 0.701);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky; /* Sticks navbar to top */
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar-container {
@@ -14,14 +18,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
-
-.logo {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-  margin-right: auto;
 }
 
 .nav-links {
@@ -36,32 +32,86 @@
   text-decoration: none;
   font-size: 1rem;
   padding: 8px 12px;
-  transition: background-color 0.3s, color 0.3s;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
 }
 
+/* Welcome Text */
 .welcome-text {
   font-size: 1rem;
   font-weight: 500;
   color: white;
 }
 
+/* Logout Button */
 .logout-button {
   background-color: white;
-  color: #0066cc; /* Match the navbar's blue shade */
+  color: #0056b3;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 10px 15px;
+  border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .logout-button:hover {
-  background-color: #f00; /* Red background on hover */
+  background-color: #f00; /* Red on hover */
   color: white;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  color: #333;
+  text-align: left;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+  color: #0056b3;
 }

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { db, auth } from '../firebase'; // Import Firebase config
+import { db, auth } from '../firebase'; // Firebase config
 import { doc, collection, addDoc } from 'firebase/firestore';
-import { QRCodeCanvas } from 'qrcode.react'; // Use named import
 import "../css/PaymentPage.css";
 
 const PaymentPage = () => {
@@ -14,7 +13,6 @@ const PaymentPage = () => {
     const [cvv, setCvv] = useState('');
     const [expiryMonth, setExpiryMonth] = useState('');
     const [expiryYear, setExpiryYear] = useState('');
-    const [cardName, setCardName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -23,64 +21,48 @@ const PaymentPage = () => {
     const handlePayment = async (e) => {
         e.preventDefault();
 
-        // Validation for card number (16 digits, numeric only)
+        // Input Validation
         if (!/^\d{16}$/.test(cardNumber)) {
-            setError('Card number must be exactly 16 digits.');
+            setError("Card number must be exactly 16 digits.");
             return;
         }
-
-        // Validation for CVV (3 or 4 digits, numeric only)
         if (!/^\d{3,4}$/.test(cvv)) {
-            setError('CVV must be 3 or 4 digits.');
+            setError("CVV must be 3 or 4 digits.");
+            return;
+        }
+        const expiryDate = new Date(parseInt(expiryYear), parseInt(expiryMonth) - 1);
+        if (expiryDate < new Date()) {
+            setError("The expiry date must be in the future.");
             return;
         }
 
-        // Validation for expiry month (valid number between 1-12)
-        if (!/^(0?[1-9]|1[0-2])$/.test(expiryMonth)) {
-            setError('Expiry month must be a valid month (1-12).');
-            return;
-        }
-
-        // Validation for expiry year (current year or greater)
-        if (!/^\d{4}$/.test(expiryYear) || parseInt(expiryYear) < currentYear) {
-            setError('Expiry year must be the current year or later.');
-            return;
-        }
-
-        // Validation for cardholder name (non-empty, no special characters)
-        if (!/^[a-zA-Z\s]+$/.test(cardName)) {
-            setError('Name on card must contain only letters and spaces.');
-            return;
-        }
-
-        setError(''); // Clear any existing error
+        setError(''); // Clear any previous error
 
         const user = auth.currentUser;
         if (!user) {
-            setError('You must be logged in to complete the payment.');
-            navigate('/login'); // Redirect to login if not logged in
+            setError("You must be logged in to complete the payment.");
+            navigate('/login');
             return;
         }
 
-        // Save booking with payment status
-        const paymentDetails = {
+        // Prepare booking details to save in Firestore
+        const bookingData = {
             ...bookingDetails,
-            cardNumber: `**** **** **** ${cardNumber.slice(-4)}`, // Mask card number
-            cardName,
-            paymentStatus: 'Completed',
+            cardNumber: `**** **** **** ${cardNumber.slice(-4)}`, // Masked card number
+            paymentStatus: "Completed",
         };
 
         setLoading(true);
         try {
-            const userRef = doc(db, 'users', user.uid);
-            const bookingsRef = collection(userRef, 'Bookings');
-            await addDoc(bookingsRef, paymentDetails);
+            const userRef = doc(db, "users", user.uid); // Reference to current user document
+            const bookingsRef = collection(userRef, "Bookings"); // Sub-collection "Bookings"
+            await addDoc(bookingsRef, bookingData); // Save booking data
 
-            alert('Payment successful! Your booking is confirmed.');
-            navigate('/categories'); // Redirect to categories after successful payment
+            alert("Payment successful! Your booking is confirmed.");
+            navigate("/categories"); // Redirect after successful payment
         } catch (err) {
-            console.error('Error saving payment details:', err);
-            setError('Payment failed. Please try again.');
+            console.error("Error saving booking details:", err.message); // Log error
+            setError("Payment failed. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -98,15 +80,7 @@ const PaymentPage = () => {
                 <div className="order-summary">
                     <h2>Order Summary</h2>
                     <p><strong>Item Name:</strong> {bookingDetails.boatName}</p>
-                    <p><strong>Total:</strong> {bookingDetails.price}</p>
-                    {/* QR Code */}
-                    <div className="qr-code">
-                        <QRCodeCanvas
-                            value={`Payment for ${bookingDetails.boatName} - ${bookingDetails.price}`}
-                            size={128}
-                        />
-                        <p>Scan to pay</p>
-                    </div>
+                    <p><strong>Total:</strong> {bookingDetails.totalPrice}</p>
                 </div>
 
                 {/* Payment Information */}
@@ -157,21 +131,11 @@ const PaymentPage = () => {
                         <div className="form-group">
                             <label>CVV</label>
                             <input
-                                type="text"
+                                type="password"
                                 value={cvv}
                                 onChange={(e) => setCvv(e.target.value)}
                                 placeholder="CVV"
                                 maxLength={4}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Name on Card</label>
-                            <input
-                                type="text"
-                                value={cardName}
-                                onChange={(e) => setCardName(e.target.value)}
-                                placeholder="Name on Card"
                                 required
                             />
                         </div>
