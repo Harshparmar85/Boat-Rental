@@ -1,0 +1,90 @@
+/* Profile Container Styling */
+.profile-container {
+    margin: 50px auto;
+    max-width: 800px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    color: #333333;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* User Card Styling */
+.user-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    color: #333333;
+    font-size: 16px;
+}
+
+/* Key-Value Pair Text Styling */
+.user-card strong {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Edit Profile Button */
+.edit-profile-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.edit-profile-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* Booking History Card */
+.history-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    color: #333333;
+    font-size: 16px;
+}
+
+/* Key-Value Pair Styling in Booking History */
+.booking-item p strong {
+    color: #007bff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 20px;
+    }
+
+    .user-card,
+    .history-card {
+        font-size: 14px;
+    }
+
+    .edit-profile-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

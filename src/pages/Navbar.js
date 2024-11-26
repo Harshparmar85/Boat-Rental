@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import "../css/Navbar.css"; // Ensure CSS for styling
@@ -6,21 +6,41 @@ import "../css/Navbar.css"; // Ensure CSS for styling
 const Navbar = () => {
   const { user, logOut } = useUserAuth();
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate("/login"); // Redirect to login after logout
+      navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  // Close the dropdown when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="logo">
-          Boat Booking
+          Auckland Boat Rentals
         </Link>
         <ul className="nav-links">
           <li>
@@ -34,19 +54,53 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/AboutUs" className="nav-item">
+            <Link to="/about-us" className="nav-item"> {/* Corrected path */}
               About Us
             </Link>
           </li>
+          {user && (
+            <li className="dropdown" ref={dropdownRef}>
+              <button
+                className="dropdown-button"
+                aria-haspopup="true"
+                onClick={toggleDropdown}
+              >
+                Dashboards
+              </button>
+              {dropdownOpen && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => navigate("/profile")}
+                    >
+                      Users
+                    </button>
+                  </li>
+                  {user.email === "Ramandeepsingh1032001@gmail.com" && (
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => navigate("/admin-dashboard")}
+                      >
+                        Admin Dashboard
+                      </button>
+                    </li>
+                  )}
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => navigate("/boat-owner")}
+                    >
+                      Boat Owners
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </li>
+          )}
           {user ? (
             <>
-              {user.email === "Ramandeepsingh1032001@gmail.com" && (
-                <li>
-                  <Link to="/admin-dashboard" className="nav-item">
-                    Admin Dashboard
-                  </Link>
-                </li>
-              )}
               <li>
                 <span className="welcome-text">
                   Welcome, {user.displayName || user.email.split("@")[0]}
@@ -79,5 +133,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
