@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Alert, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db, createUserWithEmailAndPassword, setDoc, doc } from "../firebase";
@@ -19,18 +19,36 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Clear previous error
     setLoading(true);
 
     // Validation
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match.");
       setLoading(false);
       return;
     }
 
     if (!role) {
-      setError("Please select a role");
+      setError("Please select a role.");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^\d{10}$/.test(contactNumber)) {
+      setError("Contact number must be exactly 10 digits.");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Invalid email format.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
       setLoading(false);
       return;
     }
@@ -42,13 +60,13 @@ const Signup = () => {
 
       // Save user details in Firestore
       await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        role: role.toLowerCase(), // Save role in lowercase
-        firstname: firstname, // Save firstname
-        lastname: lastname, // Save lastname
-        address: address, // Save address
-        contactNumber: contactNumber, // Save contact number
-        createdAt: new Date().toISOString(), // Add creation timestamp
+        email,
+        role: role.toLowerCase(),
+        firstname,
+        lastname,
+        address,
+        contactNumber,
+        createdAt: new Date().toISOString(),
       });
 
       // Redirect based on role
@@ -58,7 +76,7 @@ const Signup = () => {
         navigate("/home");
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -75,7 +93,10 @@ const Signup = () => {
             <Form.Control
               type="text"
               placeholder="Enter your first name"
-              onChange={(e) => setFirstname(e.target.value)}
+              onChange={(e) => {
+                setFirstname(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -84,7 +105,10 @@ const Signup = () => {
             <Form.Control
               type="text"
               placeholder="Enter your last name"
-              onChange={(e) => setLastname(e.target.value)}
+              onChange={(e) => {
+                setLastname(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -93,7 +117,10 @@ const Signup = () => {
             <Form.Control
               type="text"
               placeholder="Enter your address"
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -102,7 +129,10 @@ const Signup = () => {
             <Form.Control
               type="text"
               placeholder="Enter your contact number"
-              onChange={(e) => setContactNumber(e.target.value)}
+              onChange={(e) => {
+                setContactNumber(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -111,7 +141,10 @@ const Signup = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -120,7 +153,10 @@ const Signup = () => {
             <Form.Control
               type="password"
               placeholder="Enter password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -129,7 +165,10 @@ const Signup = () => {
             <Form.Control
               type="password"
               placeholder="Confirm password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             />
           </Form.Group>
@@ -137,7 +176,10 @@ const Signup = () => {
             <Form.Label>Role:</Form.Label>
             <Form.Control
               as="select"
-              onChange={(e) => setRole(e.target.value)}
+              onChange={(e) => {
+                setRole(e.target.value);
+                setError(""); // Clear error on input change
+              }}
               required
             >
               <option value="">Select Role</option>

@@ -74,7 +74,7 @@ const Navbar = () => {
                       className="dropdown-item"
                       onClick={() => navigate("/profile")}
                     >
-                      Users
+                      users
                     </button>
                   </li>
                   {user.email === "Ramandeepsingh1032001@gmail.com" && (
