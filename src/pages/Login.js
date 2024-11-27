@@ -32,7 +32,11 @@ const Login = () => {
   // Redirect logged-in users to the appropriate page
   useEffect(() => {
     if (user) {
-      navigate("/Home"); // Redirect to home or dashboard after successful login
+      if (user.email === "R12@gmail.com") {
+        navigate("/admin-dashboard"); // Redirect to admin dashboard if admin
+      } else {
+        navigate("/Home"); // Redirect to the home page for regular users
+      }
     }
   }, [user, navigate]);
 
@@ -41,7 +45,13 @@ const Login = () => {
     setError("");
     try {
       await logIn(email, password);
-      navigate("/Home"); // Navigate after login
+
+      // Check if the user is an admin based on the credentials
+      if (email === "R12@gmail.com" && password === "A12345") {
+        navigate("/admin-dashboard"); // Navigate to admin dashboard
+      } else {
+        navigate("/Home"); // Navigate to home for regular users
+      }
     } catch (err) {
       setError("Invalid email or password. Please try again.");
     }
@@ -51,7 +61,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await googleSignIn();
-      navigate("/Home");
+      navigate("/Home"); // Redirect to Home after Google sign-in
     } catch (error) {
       setError("Google sign-in failed. Please try again.");
     }

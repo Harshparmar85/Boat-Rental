@@ -48,14 +48,17 @@ const Navbar = () => {
               Home
             </Link>
           </li>
+          <li><Link to ="/AdminPage" className="nav-item">
+          AdminPage
+          </Link></li>
           <li>
             <Link to="/categories" className="nav-item">
               Categories
             </Link>
           </li>
           <li>
-            <Link to="/about-us" className="nav-item"> {/* Corrected path */}
-              About Us
+            <Link to="/AboutUs" className="nav-item">
+              AboutUs
             </Link>
           </li>
           {user && (
@@ -74,19 +77,10 @@ const Navbar = () => {
                       className="dropdown-item"
                       onClick={() => navigate("/profile")}
                     >
-                      users
+                      User Profile
                     </button>
                   </li>
-                  {user.email === "Ramandeepsingh1032001@gmail.com" && (
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => navigate("/admin-dashboard")}
-                      >
-                        Admin Dashboard
-                      </button>
-                    </li>
-                  )}
+                  
                   <li>
                     <button
                       className="dropdown-item"
@@ -119,11 +113,7 @@ const Navbar = () => {
                   Login
                 </Link>
               </li>
-              <li>
-                <Link to="/admin-login" className="nav-item">
-                  Admin Login
-                </Link>
-              </li>
+             
             </>
           )}
         </ul>

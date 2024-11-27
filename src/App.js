@@ -11,9 +11,8 @@ import BoatOwner from "./pages/BoatOwer";
 import OwnersDashboard from "./pages/OwnersDashboard";
 import BookingPage from "./pages/BookingPage";
 import PaymentPage from "./pages/PaymentPage";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
 import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/AdminPage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -38,6 +37,7 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/AdminPage" element={<AdminPage />} />
             <Route
               path="/BookingPage"
               element={
@@ -62,15 +62,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/admin-login" element={<AdminLogin />} />
-            <Route
-              path="/admin-dashboard"
-              element={
-                <ProtectedRoute requiredAdmin={true}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+           
             <Route
               path="/boat-owner"
               element={
