@@ -14,15 +14,15 @@ const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("user"); // Default role
+  const [role, setRole] = useState("user"); // Default role is "user"
   const [loading, setLoading] = useState(true);
 
-  // Login with email and password
+  // Login function
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  // Sign up with email and password
+  // Sign up function
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -43,7 +43,7 @@ export function UserAuthContextProvider({ children }) {
     return signInWithPopup(auth, googleAuthProvider);
   }
 
-  // Fetch and update user state on authentication change
+  // Fetch authenticated user and role
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setLoading(true);
@@ -51,24 +51,24 @@ export function UserAuthContextProvider({ children }) {
       if (currentUser) {
         setUser(currentUser);
         try {
-          const userDoc = await FBDataService.getData(currentUser.uid); // Fetch user document
+          const userDoc = await FBDataService.getData(currentUser.uid);
           if (userDoc.exists()) {
             const userData = userDoc.data();
-            setRole(userData.role || "user"); // Set role or default to "user"
+            setRole(userData.role || "user");
           } else {
             console.warn("User document not found. Setting default role.");
-            setRole("user"); // Fallback to default role
+            setRole("user");
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
-          setRole("user"); // Fallback to default role on error
+          setRole("user");
         }
       } else {
         setUser(null);
-        setRole("user"); // Reset role to default when logged out
+        setRole("user");
       }
 
-      setLoading(false); // Authentication state resolved
+      setLoading(false);
     });
 
     return () => {
@@ -76,7 +76,7 @@ export function UserAuthContextProvider({ children }) {
     };
   }, []);
 
-  // Render loading state until authentication is resolved
+  // Show loading until authentication is resolved
   if (loading) {
     return <div style={{ textAlign: "center", padding: "20px" }}>Loading...</div>;
   }
@@ -97,7 +97,7 @@ export function UserAuthContextProvider({ children }) {
   );
 }
 
-// Hook to access authentication context
+// Hook to use the context
 export function useUserAuth() {
   return useContext(userAuthContext);
 }

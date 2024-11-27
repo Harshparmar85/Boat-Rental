@@ -10,24 +10,27 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const adminEmail = "R12@gmail.com"; // Replace with your admin email
-  const adminPassword = "A12345"; // Replace with your admin password
+  const adminEmail = "R12@gmail.com"; // Admin email address
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Check if the entered email and password match the predefined credentials
-    if (email !== adminEmail || password !== adminPassword) {
-      setError("Access restricted to admins only. Invalid email or password.");
-      return;
-    }
+    setError("");
+    setLoading(true);
 
     try {
-      setError(""); // Reset any previous error
-      setLoading(true); // Show loading state
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/admin-dashboard"); // Redirect to admin dashboard
+      // Authenticate the user
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check if the logged-in user is an admin
+      if (user.email === adminEmail) {
+        navigate("/admin-dashboard"); // Redirect to admin dashboard
+      } else {
+        setError("Access restricted to admins only.");
+        await auth.signOut(); // Sign out non-admin users
+      }
     } catch (err) {
+      console.error("Error during admin login:", err);
       const errorMessage =
         err.code === "auth/wrong-password"
           ? "Invalid password. Please try again."
@@ -36,7 +39,7 @@ const AdminLogin = () => {
           : "Something went wrong. Please try again.";
       setError(errorMessage);
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 
@@ -47,7 +50,6 @@ const AdminLogin = () => {
         <input
           type="email"
           placeholder="Admin Email"
-          aria-label="Admin Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -56,7 +58,6 @@ const AdminLogin = () => {
         <input
           type="password"
           placeholder="Password"
-          aria-label="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
