@@ -1,83 +1,145 @@
-import React, { useState, useEffect } from "react";
-import { db } from "../firebase"; // Import Firestore
-import { collection, getDocs, query, where } from "firebase/firestore"; // Import Firestore functions
-import "../css/AdminPage.css";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
+import "../css/AdminP.css";
 
 const AdminPage = () => {
-  const [boatOwners, setBoatOwners] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [users, setUsers] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndBookings = async () => {
       try {
-        setLoading(true);
-        
-        // Fetch Boat Owners
-        const boatOwnersQuery = query(collection(db, "users"), where("role", "==", "boatowner"));
-        const boatOwnersSnapshot = await getDocs(boatOwnersQuery);
-        const boatOwnersData = boatOwnersSnapshot.docs.map(doc => doc.data());
-        setBoatOwners(boatOwnersData);
-        
-        // Fetch Customers
-        const customersQuery = query(collection(db, "users"), where("role", "==", "customer"));
-        const customersSnapshot = await getDocs(customersQuery);
-        const customersData = customersSnapshot.docs.map(doc => doc.data());
-        setCustomers(customersData);
-        
-        setLoading(false);
+        // Fetch users
+        const usersCollection = collection(db, "users");
+        const userSnapshot = await getDocs(usersCollection);
+        const usersList = userSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(usersList);
+
+        // Fetch bookings
+        const bookingsCollection = collection(db, "bookings");
+        const bookingSnapshot = await getDocs(bookingsCollection);
+        const bookingsList = bookingSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setBookings(bookingsList);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load data.");
-        setLoading(false);
       }
     };
 
-    fetchUsers();
-  }, []); // Run this on component mount
+    fetchUsersAndBookings();
+  }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  const toggleAccountStatus = async (userId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === "active" ? "disabled" : "active";
+      const userDoc = doc(db, "users", userId);
+      await updateDoc(userDoc, { accountStatus: newStatus });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, accountStatus: newStatus } : user
+        )
+      );
+    } catch (err) {
+      console.error("Error updating account status:", err);
+      setError("Failed to update account status.");
+    }
+  };
 
   return (
-    <div className="admin-page">
-      <h2>Admin Dashboard</h2>
-      <div className="user-section">
-        <h3>Boat Owners</h3>
-        {boatOwners.length > 0 ? (
-          <ul>
-            {boatOwners.map((owner, index) => (
-              <li key={index}>
-                <strong>{owner.firstname} {owner.lastname}</strong><br />
-                Email: {owner.email}<br />
-                Contact: {owner.contactNumber}<br />
-                Address: {owner.address}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No boat owners found.</p>
-        )}
-      </div>
+    <div>
+      <h1>Admin Page</h1>
+      {error && <p>{error}</p>}
 
-      <div className="user-section">
-        <h3>Customers</h3>
-        {customers.length > 0 ? (
-          <ul>
-            {customers.map((customer, index) => (
-              <li key={index}>
-                <strong>{customer.firstname} {customer.lastname}</strong><br />
-                Email: {customer.email}<br />
-                Contact: {customer.contactNumber}<br />
-                Address: {customer.address}
-              </li>
+      {/* User Management */}
+      {users.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>
+                  {user.firstName} {user.lastName}
+                </td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>{user.accountStatus || "active"}</td>
+                <td>
+                  <button
+                    onClick={() =>
+                      toggleAccountStatus(user.id, user.accountStatus || "active")
+                    }
+                  >
+                    {user.accountStatus === "disabled"
+                      ? "Enable Account"
+                      : "Disable Account"}
+                  </button>
+                </td>
+              </tr>
             ))}
-          </ul>
-        ) : (
-          <p>No customers found.</p>
-        )}
-      </div>
+          </tbody>
+        </table>
+      ) : (
+        !error && <p>Loading users...</p>
+      )}
+
+      {/* Booking History */}
+      <h2>Booking History</h2>
+      {bookings.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>User Email</th>
+              <th>Customer Name</th>
+              <th>Boat Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Price Per Day</th>
+              <th>Total Price</th>
+              <th>Payment Status</th>
+              <th>Card Number</th>
+              <th>Contact Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((booking) => {
+              // Find the corresponding user for this booking
+              const user = users.find((user) => user.id === booking.userId);
+              return (
+                <tr key={booking.id}>
+                  <td>{user ? user.email : "Unknown User"}</td>
+                  <td>{booking.customerName || "N/A"}</td> {/* Display customer name */}
+                  <td>{booking.boatName || "N/A"}</td> {/* Display boat name */}
+                  <td>{booking.startDate || "N/A"}</td> {/* Display start date */}
+                  <td>{booking.endDate || "N/A"}</td> {/* Display end date */}
+                  <td>{booking.pricePerDay || "N/A"}</td> {/* Display price per day */}
+                  <td>{booking.totalPrice || "N/A"}</td> {/* Display total price */}
+                  <td>{booking.paymentStatus || "Pending"}</td> {/* Display payment status */}
+                  <td>{booking.cardNumber || "N/A"}</td> {/* Display card number */}
+                  <td>{booking.contactNumber || "N/A"}</td> {/* Display contact number */}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        !error && <p>Loading booking history...</p>
+      )}
     </div>
   );
 };

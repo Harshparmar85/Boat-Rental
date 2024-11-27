@@ -7,10 +7,11 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyB6f89eQmVDVOKQkilHcrMd8hRzDFpxAXQ",
   authDomain: "boat-rental-4052b.firebaseapp.com",
+  databaseURL: "https://boat-rental-4052b-default-rtdb.firebaseio.com",
   projectId: "boat-rental-4052b",
-  storageBucket: "boat-rental-4052b.appspot.com", // Updated storage bucket
+  storageBucket: "boat-rental-4052b.firebasestorage.app",
   messagingSenderId: "987066892083",
-  appId: "1:987066892083:web:8c65d534f9b86929460846",
+  appId: "1:987066892083:web:8c65d534f9b86929460846"
 };
 
 // Initialize Firebase
