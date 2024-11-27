@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import "../css/AdminP.css";
 
@@ -53,6 +53,17 @@ const AdminPage = () => {
     }
   };
 
+  const deleteAccount = async (userId) => {
+    try {
+      const userDoc = doc(db, "users", userId);
+      await deleteDoc(userDoc);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+    } catch (err) {
+      console.error("Error deleting account:", err);
+      setError("Failed to delete account.");
+    }
+  };
+
   return (
     <div>
       <h1>Admin Page</h1>
@@ -67,7 +78,8 @@ const AdminPage = () => {
               <th>Email</th>
               <th>Role</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Address</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -79,6 +91,7 @@ const AdminPage = () => {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td>{user.accountStatus || "active"}</td>
+                <td>{user.address || "Not Provided"}</td> {/* Display the address */}
                 <td>
                   <button
                     onClick={() =>
@@ -89,6 +102,7 @@ const AdminPage = () => {
                       ? "Enable Account"
                       : "Disable Account"}
                   </button>
+                  <button onClick={() => deleteAccount(user.id)}>Delete Account</button>
                 </td>
               </tr>
             ))}
@@ -118,7 +132,6 @@ const AdminPage = () => {
           </thead>
           <tbody>
             {bookings.map((booking) => {
-              // Find the corresponding user for this booking
               const user = users.find((user) => user.id === booking.userId);
               return (
                 <tr key={booking.id}>
